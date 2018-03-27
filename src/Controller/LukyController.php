@@ -17,7 +17,7 @@ class LukyController
     /**
           * @Route("/lucky/number")
           *
-          * @Route Response
+          * @Route Responset    
      */
     public function number()
     {
