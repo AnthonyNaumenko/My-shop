@@ -22,12 +22,6 @@ class ProductController extends Controller
         ]);
     }
 
-
-
-
-
-
-
     /**
      * @Route("/product/create", name="product_create")
      */
