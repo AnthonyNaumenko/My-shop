@@ -20,4 +20,13 @@
     </ul>
     <a href="{{ path('show',{id:'new-link-from-index'}) }}"> Перейти на Show</a>
 </div>
+
+    <div>
+        <h1>Топ товаров</h1>
+          {% for product in  topProductss %}
+             <ul>
+              <li><a href="{{ path('product_show', {id: product.id}) }} "> {{ product.title }}</a></li>
+             </ul>
+          {% endfor %}
+    </div>
 {% endblock %}

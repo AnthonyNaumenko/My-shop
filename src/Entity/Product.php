@@ -1,9 +1,6 @@
 <?php
-
 namespace App\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  * @ORM\Table(name="products")
@@ -16,12 +13,10 @@ class Product
      * @ORM\Column(type="integer")
      */
     private $id;
-
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $title;
-
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
@@ -30,7 +25,6 @@ class Product
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
-
     /**
      * @var Category
      *
@@ -39,35 +33,36 @@ class Product
      */
     private $category;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isTop;
+    public function __construct(){
+        $this->isTop=false;
+    }
+
     public function getId()
     {
         return $this->id;
     }
-
     public function getTitle(): ?string
     {
         return $this->title;
     }
-
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
         return $this;
     }
-
     public function getPrice()
     {
         return $this->price;
     }
-
     public function setPrice($price): self
     {
         $this->price = $price;
-
         return $this;
     }
-
     /**
      * @return mixed
      */
@@ -75,7 +70,6 @@ class Product
     {
         return $this->description;
     }
-
     /**
      * @param mixed $description
      * @return Product
@@ -83,20 +77,27 @@ class Product
     public function setDescription($description):self
     {
         $this->description = $description;
-
         return $this;
     }
-
     public function getCategory(): ?Category
     {
         return $this->category;
     }
-
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
-
         return $this;
     }
 
+    public function getIsTop(): ?bool
+    {
+        return $this->isTop;
+    }
+
+    public function setIsTop(?bool $isTop): self
+    {
+        $this->isTop = $isTop;
+
+        return $this;
+    }
 }
