@@ -4,14 +4,16 @@
     <h1>{{ category.name }}</h1>
 
     <ul>
-        {% if category.parent %}
-            <li>
-                <a href="{{ path('category_show', {id: category.parent.id}) }}">
-                    Back
-                </a>
-            </li>
-        {% endif %}
+    {% if category.parent %}
+        <li>
+            <a href="{{ path('category_show', {id:category.parent.id}) }}">
+                Back
+            </a>
+        </li>
+        </ul>
+    {% endif %}
 
+    <ul>
         {% for subcategory in category.subcategories %}
             <li>
                 <a href="{{ path('category_show', {id: subcategory.id}) }}">
@@ -21,26 +23,24 @@
         {% endfor %}
     </ul>
 
-<div class="card-deck product">
-    {% for product in category.products %}
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="//placehold.it/300x200" alt="{{ product.title }}">
-            <div class="card-body">
-                <h5 class="card-title">
-                    <a href="{{ path('product_show', {id: product.id}) }}">
-                        {{ product.title }}
-                    </a>
-                </h5>
-
-                <p class="card-text">{{ product.price }}</p>
-                <p class="card-text">{{ product.description }}</p>
+    <div class="card-deck product">
+        {% for product in category.products %}
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="//placehold.it/300x200" alt="{{ product.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{{ path('product_show', {id:product.id}) }}">
+                            {{ product.title }}
+                        </a>
+                    </h5>
+                    <p class="card-text">{{ product.price }}</p>
+                    <p class="card-text">{{ product.description }}</p>
+                </div>
             </div>
-        </div>
-    {% endfor %}
-</div>
+        {% endfor %}
+    </div>
 {% endblock %}
 
 {% block title %}
     {{ category.name }}
 {% endblock %}
-
