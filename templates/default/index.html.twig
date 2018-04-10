@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}{% endblock %}
 
 {% block body %}
 <style>
@@ -17,7 +17,7 @@
 
     <div>
         <h1>Топ товаров</h1>
-          {% for product in  topProductss %}
+          {% for product in  topProducts %}
              <ul>
               <li><a href="{{ path('product_show', {id: product.id}) }} "> {{ product.title }}</a></li>
              </ul>
