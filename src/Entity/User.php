@@ -1,11 +1,7 @@
 <?php
-
 namespace App\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="users")
@@ -18,32 +14,26 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(type="integer")
      */
     private $id;
-
     /**
-     * @ORM\Column(type="string", length=255, options={"default": ""})
+     * @ORM\Column(type="string", length=255, options={"default":""})
      */
     private $username;
-
     /**
-     * @ORM\Column(type="string", length=255, options={"default": ""})
+     * @ORM\Column(type="string", length=255, options={"default":""})
      */
     private $password;
-
     /**
-     * @ORM\Column(type="string", length=255, options={"default": ""})
+     * @ORM\Column(type="string", length=255, options={"default":""})
      */
     private $email;
-
     /**
      * @ORM\Column(type="boolean", options={"default": true})
      */
     private $isActive;
-
     /**
      * @ORM\Column(type="simple_array")
      */
     private $roles;
-
     public function __construct()
     {
         $this->username = '';
@@ -52,86 +42,67 @@ class User implements AdvancedUserInterface, \Serializable
         $this->isActive = true;
         $this->roles = ['ROLE_USER'];
     }
-
     public function getId()
     {
         return $this->id;
     }
-
     public function getUsername(): ?string
     {
         return $this->username;
     }
-
     public function setUsername(string $username): self
     {
         $this->username = $username;
-
         return $this;
     }
-
     public function getPassword(): ?string
     {
         return $this->password;
     }
-
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
-
     public function getEmail(): ?string
     {
         return $this->email;
     }
-
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
         return $this;
     }
-
     public function getIsActive(): ?bool
     {
         return $this->isActive;
     }
-
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
-
         return $this;
     }
-
-
     public function getRoles(): ?array
     {
         return $this->roles;
     }
-
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
-
         return $this;
     }
-
     /**
      * String representation of object
      * @link http://php.net/manual/en/serializable.serialize.php
      * @return string the string representation of the object or null
      * @since 5.1.0
      */
-    public function serialize()
+    public function serialize() // Преврашение объекта в строку (для сессии)
     {
         return serialize([
-           $this->id, $this->username, $this->password, $this->email, $this->isActive, $this->roles
+            $this->id, $this->username, $this->password, $this->isActive, $this->roles
         ]);
     }
-
     /**
      * Constructs the object
      * @link http://php.net/manual/en/serializable.unserialize.php
@@ -144,9 +115,8 @@ class User implements AdvancedUserInterface, \Serializable
     public function unserialize($serialized)
     {
         $data = unserialize($serialized);
-        list( $this->id, $this->username, $this->password, $this->email, $this->isActive, $this->roles)=$data;
+        list($this->id, $this->username, $this->password, $this->isActive, $this->roles) = $data;
     }
-
     /**
      * Returns the salt that was originally used to encode the password.
      *
@@ -158,7 +128,6 @@ class User implements AdvancedUserInterface, \Serializable
     {
         return null;
     }
-
     /**
      * Removes sensitive data from the user.
      *
@@ -167,9 +136,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function eraseCredentials()
     {
-
     }
-
     /**
      * Checks whether the user's account has expired.
      *
@@ -184,7 +151,6 @@ class User implements AdvancedUserInterface, \Serializable
     {
         return $this->isActive;
     }
-
     /**
      * Checks whether the user is locked.
      *
@@ -199,7 +165,6 @@ class User implements AdvancedUserInterface, \Serializable
     {
         return $this->isActive;
     }
-
     /**
      * Checks whether the user's credentials (password) has expired.
      *
@@ -212,9 +177,8 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function isCredentialsNonExpired()
     {
-        return true;
+        return $this->isActive;
     }
-
     /**
      * Checks whether the user is enabled.
      *

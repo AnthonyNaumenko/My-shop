@@ -9,16 +9,10 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
     <img src="{{ 'images/kstawdh9qq_e7ocb6wk-izoxqmg.png' }}" width="300">
-    <p>Counter:{{ counter }}</p>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>src/Controller/DefaultController.php</code></li>
-        <li>Your template at <code>templates/default/index.html.twig</code></li>
-    </ul>
-    <a href="{{ path('show',{id:'new-link-from-index'}) }}"> Перейти на Show</a>
+    <p>
+        <a href="{{ path('show',{id:'new-link-from-index'}) }}"> Перейти на Show</a>
+    </p>
 </div>
 
     <div>
