@@ -34,7 +34,7 @@ class Product
     private $category;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", options={"default":false})
      */
     private $isTop;
     public function __construct(){
