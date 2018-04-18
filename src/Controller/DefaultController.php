@@ -43,11 +43,5 @@ class DefaultController extends Controller
         }
         return $this->render('default/show.html.twig', ['id' => $id]);
     }
-    /**
-     * @Route("/admin")
-     */
-    public function admin()
-    {
-        return new Response('<html><body>Admin page!</body></html>');
-    }
+
 }
