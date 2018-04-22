@@ -36,6 +36,7 @@ class CategoryController extends Controller
             ->select('cat, subcat, p')
             ->where('cat.id = :id')
             ->setParameter('id', $id);
+
         $category = $qb->getQuery()->getOneOrNullResult();
         if (!$category) {
             throw $this->createNotFoundException('Category with id#'.$id.' not found.');
