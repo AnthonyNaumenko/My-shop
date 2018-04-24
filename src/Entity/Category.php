@@ -1,17 +1,22 @@
 <?php
 namespace App\Entity;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Tree\Traits\NestedSetEntity;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ * @Gedmo\Tree(type="nested")
+ * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @ORM\Table(name="category")
  * @Vich\Uploadable()
  */
 class Category
 {
+    use NestedSetEntity;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -32,6 +37,7 @@ class Category
     private $products;
 
     /**
+     * @Gedmo\TreeParent
      * @var Category
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="subcategories")
@@ -40,8 +46,9 @@ class Category
     private $parent;
 
     /**
-     * @var Category[]
      *
+     * @var Category[]
+     * @ORM\OrderBy({"left" = "ASC"})
      * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="parent")
      */
     private $subcategories;
@@ -256,6 +263,14 @@ class Category
     {
         $this->updatedAt = $updatedAt;
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLevel(): ?int
+    {
+        return $this->level;
     }
 
 

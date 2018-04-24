@@ -10,10 +10,23 @@
         </tr>
 
         {% for category in categories %}
+
+
             <tr>
                 <td>{{ category.id }}</td>
                 <td><a href="{{ path('category_show', {id: category.id}) }}">{{ category.name }}</a></td>
             </tr>
+
         {% endfor %}
     </table>
 {% endblock %}
+
+
+{#
+<img class="card-img-top"
+     src="{%- if product.imageName -%}
+                           {{ vich_uploader_asset(product, 'imageFile') | imagine_filter('squared_product_thumbnail')}}
+                       {%- else -%}
+                           //placehold.it/300x200
+                       {%- endif -%}"
+     alt="{{ product.title }}">#}
