@@ -12,7 +12,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Order
 {
+
+    const STATUS_DRAFT = 0;
+    const STATUS_ORDERED = 1;
+    const STATUS_SENT = 2;
+    const STATUS__DONE = 3;
+
     /**
+     * @var int
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -20,6 +28,8 @@ class Order
     private $id;
 
     /**
+     * @var \DateTime
+     *
      * @ORM\Column(type="datetime")
      */
     private $timeOfCreation;
@@ -30,7 +40,7 @@ class Order
     private $status;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="boolean", length=5)
      */
     private $statusOfPay;
 
@@ -55,6 +65,10 @@ class Order
     public function __construct()
     {
         $this->orderItem = new ArrayCollection();
+        $this->orderPrice = 0;
+        $this->statusOfPay = false;
+        $this->timeOfCreation = new \DateTime();
+        $this->status = self::STATUS_DRAFT;
     }
 
     public function getId()

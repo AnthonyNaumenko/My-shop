@@ -41,6 +41,13 @@ class Product
      * @ORM\Column(type="boolean", options={"default":false})
      */
     private $isTop;
+
+    /**
+     * @var OrderItem[]
+     * @ORM\OneToMany(targetEntity="App\Entity\OrderItem", mappedBy="product")
+     */
+    private $orderItems;
+
     public function __construct(){
         $this->isTop=false;
     }
@@ -233,6 +240,7 @@ class Product
         $this->updatedAt = $updatedAt;
         return $this;
     }
+
 
 
 

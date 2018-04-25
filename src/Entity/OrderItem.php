@@ -18,7 +18,10 @@ class OrderItem
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var Product
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="orderItems")
+     * @ORM\JoinColum
      */
     private $product;
 
@@ -39,10 +42,13 @@ class OrderItem
 
     /**
      * @var Order
-     * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="OrderItems")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="orderItems")
      * @ORM\JoinColumn(nullable=true)
      */
     private $order;
+
+
+
 
 
     public function getId()
@@ -50,12 +56,12 @@ class OrderItem
         return $this->id;
     }
 
-    public function getProduct(): ?string
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    public function setProduct(string $product): self
+    public function setProduct(?Product $product): self
     {
         $this->product = $product;
 
