@@ -1,171 +1,144 @@
 <?php
-
 namespace App\Entity;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
 /**
- * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
+ * @ORM\Entity
  * @ORM\Table(name="orders")
  */
 class Order
 {
-
     const STATUS_DRAFT = 0;
     const STATUS_ORDERED = 1;
     const STATUS_SENT = 2;
-    const STATUS__DONE = 3;
-
+    const STATUS_DONE = 3;
     /**
      * @var int
      *
-     * @ORM\Id()
+     * @ORM\Id
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
      */
-    private $timeOfCreation;
-
+    private $createdAt;
     /**
-     * @ORM\Column(type="string", length=100)
+     * @var int
+     *
+     * @ORM\Column(type="smallint", options={"default": 0})
      */
     private $status;
-
     /**
-     * @ORM\Column(type="boolean", length=5)
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
      */
-    private $statusOfPay;
-
+    private $isPaid;
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var float
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=2, options={"default": 0})
      */
-    private $User;
-
+    private $amount;
     /**
-    @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="orders")
+     * @ORM\JoinColumn()
      */
-    private $orderPrice;
-
+    private $user;
     /**
      * @var OrderItem[]
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderItem", mappedBy="Orders")
      *
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\OrderItem", mappedBy="order")
      */
-    private $orderItem;
-
+    private $items;
     public function __construct()
     {
-        $this->orderItem = new ArrayCollection();
-        $this->orderPrice = 0;
-        $this->statusOfPay = false;
-        $this->timeOfCreation = new \DateTime();
         $this->status = self::STATUS_DRAFT;
+        $this->createdAt = new \DateTime();
+        $this->isPaid = false;
+        $this->amount = 0;
+        $this->items = new ArrayCollection();
     }
-
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
-
-    public function getTimeOfCreation(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->timeOfCreation;
+        return $this->createdAt;
     }
-
-    public function setTimeOfCreation(\DateTimeInterface $timeOfCreation): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->timeOfCreation = $timeOfCreation;
-
+        $this->createdAt = $createdAt;
         return $this;
     }
-
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->status;
     }
-
-    public function setStatus(string $status): self
+    public function setStatus(int $status): self
     {
         $this->status = $status;
-
         return $this;
     }
-
-
-    public function getStatusOfPay(): ?string
+    public function getIsPaid(): ?bool
     {
-        return $this->statusOfPay;
+        return $this->isPaid;
     }
-
-    public function setStatusOfPay(string $statusOfPay): self
+    public function setIsPaid(bool $isPaid): self
     {
-        $this->statusOfPay = $statusOfPay;
-
+        $this->isPaid = $isPaid;
         return $this;
     }
-
-    public function getUser(): ?string
+    public function getAmount()
     {
-        return $this->User;
+        return $this->amount;
     }
-
-    public function setUser(string $User): self
+    public function setAmount($amount): self
     {
-        $this->User = $User;
-
+        $this->amount = $amount;
         return $this;
     }
-
-    public function getOrderPrice(): ?string
+    public function getUser(): ?User
     {
-        return $this->orderPrice;
+        return $this->user;
     }
-
-    public function setOrderPrice(string $orderPrice): self
+    public function setUser(?User $user): self
     {
-        $this->orderPrice = $orderPrice;
-
+        $this->user = $user;
         return $this;
     }
-
     /**
      * @return Collection|OrderItem[]
      */
-    public function getOrderItem(): Collection
+    public function getItems(): Collection
     {
-        return $this->orderItem;
+        return $this->items;
     }
-
-    public function addOrderItem(OrderItem $orderItem): self
+    public function addItem(OrderItem $item): self
     {
-        if (!$this->orderItem->contains($orderItem)) {
-            $this->orderItem[] = $orderItem;
-            $orderItem->setOrders($this);
+        if (!$this->items->contains($item)) {
+            $this->items[] = $item;
+            $item->setOrder($this);
         }
-
         return $this;
     }
-
-    public function removeOrderItem(OrderItem $orderItem): self
+    public function removeItem(OrderItem $item): self
     {
-        if ($this->orderItem->contains($orderItem)) {
-            $this->orderItem->removeElement($orderItem);
+        if ($this->items->contains($item)) {
+            $this->items->removeElement($item);
             // set the owning side to null (unless already changed)
-            if ($orderItem->getOrders() === $this) {
-                $orderItem->setOrders(null);
+            if ($item->getOrder() === $this) {
+                $item->setOrder(null);
             }
         }
-
         return $this;
     }
-
 }

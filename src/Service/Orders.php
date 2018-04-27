@@ -57,7 +57,7 @@ class Orders
         $existingItem = null;
 
 
-        foreach ($order->getOrderItem() as $item){
+        foreach ($order->getItems() as $item){
            if ($item->getProduct()-> getID() ==$product->getId() ) {
              $existingItem = $item;
              break;

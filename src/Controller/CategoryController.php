@@ -13,19 +13,17 @@ class CategoryController extends Controller
     public function index()
     {
         $repo = $this->getDoctrine()->getRepository(Category::class);
-        // $categories = $repo->findBy(['parent' => null]); //<< вместо, следующее:
-
         $roots = $repo->getRootNodes();
         $root = reset($roots);
         $qb = $repo->createQueryBuilder('cat');
         $qb
             ->select('cat')
-            ->where('cat.parent = :parent ')
+            ->where('cat.parent = :parent')
             ->setParameter('parent', $root)
         ;
         $categories = $qb->getQuery()->execute();
         return $this->render('category/index.html.twig', [
-            'categories'=>$categories
+            'categories' => $categories
         ]);
     }
     /**
@@ -40,10 +38,11 @@ class CategoryController extends Controller
             ->leftJoin('cat.products', 'p')
             ->select('cat, subcat, p')
             ->where('cat.id = :id')
-            ->setParameter('id', $id);
+            ->setParameter('id', $id)
+        ;
         $category = $qb->getQuery()->getOneOrNullResult();
         if (!$category) {
-            throw $this->createNotFoundException('Category with id#'.$id.' not found.');
+            throw $this->createNotFoundException('Category with id #' . $id . ' not found.');
         }
         return $this->render('category/show.html.twig', [
             'category' => $category,
@@ -54,7 +53,7 @@ class CategoryController extends Controller
         $repo = $em->getRepository(Category::class);
         $tree = $repo->childrenHierarchy();
         return $this->render('category/menu.html.twig', [
-            'tree'=> $tree,
+            'tree' => $tree,
         ]);
     }
 }

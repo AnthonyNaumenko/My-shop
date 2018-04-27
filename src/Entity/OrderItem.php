@@ -1,118 +1,105 @@
 <?php
-
 namespace App\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
-
 /**
- * @ORM\Entity(repositoryClass="App\Repository\OrderItemRepository")
+ * @ORM\Entity
  * @ORM\Table(name="order_items")
  */
 class OrderItem
 {
     /**
-     * @ORM\Id()
+     * @var int
+     *
+     * @ORM\Id
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
-
+    /**
+     * @var Order
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="items")
+     * @ORM\JoinColumn()
+     */
+    private $order;
     /**
      * @var Product
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="orderItems")
-     * @ORM\JoinColum
+     * @ORM\JoinColumn()
      */
     private $product;
-
     /**
-     * @ORM\Column(type="decimal", precision=2)
+     * @var int
+     *
+     * @ORM\Column(type="integer", options={"default": 0})
      */
-    private $quantityOfOrderedItems;
-
+    private $quantity;
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @var float
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=2, options={"default": 0})
      */
     private $price;
-
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @var float
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=2, options={"default": 0})
      */
-    private $value;
-
-    /**
-     * @var Order
-     * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="orderItems")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $order;
-
-
-
-
-
-    public function getId()
+    private $amount;
+    public function __construct()
+    {
+        $this->quantity = 0;
+        $this->price = 0;
+        $this->amount = 0;
+    }
+    public function getId(): ?int
     {
         return $this->id;
     }
-
-    public function getProduct(): ?Product
+    public function getQuantity(): ?int
     {
-        return $this->product;
+        return $this->quantity;
     }
-
-    public function setProduct(?Product $product): self
+    public function setQuantity(int $quantity): self
     {
-        $this->product = $product;
-
+        $this->quantity = $quantity;
         return $this;
     }
-
-    public function getQuantityOfOrderedItems()
-    {
-        return $this->quantityOfOrderedItems;
-    }
-
-    public function setQuantityOfOrderedItems($quantityOfOrderedItems): self
-    {
-        $this->quantityOfOrderedItems = $quantityOfOrderedItems;
-
-        return $this;
-    }
-
     public function getPrice()
     {
         return $this->price;
     }
-
     public function setPrice($price): self
     {
         $this->price = $price;
-
         return $this;
     }
-
-    public function getValue()
+    public function getAmount()
     {
-        return $this->value;
+        return $this->amount;
     }
-
-    public function setValue($value): self
+    public function setAmount($amount): self
     {
-        $this->value = $value;
-
+        $this->amount = $amount;
         return $this;
     }
-
     public function getOrder(): ?Order
     {
         return $this->order;
     }
-
     public function setOrder(?Order $order): self
     {
         $this->order = $order;
-
+        return $this;
+    }
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
         return $this;
     }
 }
