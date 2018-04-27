@@ -127,6 +127,7 @@ class Order
         if (!$this->items->contains($item)) {
             $this->items[] = $item;
             $item->setOrder($this);
+            $this->updateAmount();
         }
         return $this;
     }
@@ -138,7 +139,15 @@ class Order
             if ($item->getOrder() === $this) {
                 $item->setOrder(null);
             }
+            $this->updateAmount();
         }
         return $this;
+    }
+    public function updateAmount(){
+        $total = 0;
+        foreach ($this->items as $item){
+            $total+=$item->getAmount();
+        }
+        $this->amount = $total;
     }
 }
