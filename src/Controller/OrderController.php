@@ -20,7 +20,13 @@ class OrderController extends Controller
         $quantity=1
         )
     {
-       $orders->addToCart($product, $quantity);
+       $orders->addToCart($product, $quantity, $this->getUser());
+
+       if ($request->isXmlHttpRequest()){
+           return $this->render('order/header_cart.html.twig',[
+               'cart'=> $orders->getCart()
+           ]);
+       }
 
         return $this->redirect($request->headers->get('referer','/'));
     }
@@ -28,26 +34,24 @@ class OrderController extends Controller
     /**
      * @param Orders $ordersCart
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/orders", name="order_cart")
+     * @Route("/cart", name="order_cart")
      */
     public function cart(Orders $orders)
     {
-        //$orders->getCart();
-        $cartId = $orders->getCart()->getId();
-        $cartCreated = $orders->getCart()->getCreatedAt();
-        $status = $orders->getCart()->getStatus();
-        $userId = $orders->getCart()->getUser();
-        $isPaid = $orders->getCart()->getIsPaid();
-        $amount = $orders->getCart()->getAmount();
+        $cart = $orders->getCart();
 
-        return $this->render('order/cart.html.twig',[
-              'cartId'=>$cartId,
-              'cartCreated'=>$cartCreated,
-              'status'=>$status,
-              'user'=>$userId,
-              'isPaid'=>$isPaid,
-              'amount'=>$amount
+        return $this->render('order/cart.html.twig', [
+            'cart' => $cart]);
+    }
 
+
+    /**
+     * @Route("/cart/header", name="order_header_cart")
+     */
+    public function headerCart(Orders $orders)
+    {
+        return $this->render('order/header_cart.html.twig',[
+            'cart'=> $orders->getCart()
     ]);
     }
 }

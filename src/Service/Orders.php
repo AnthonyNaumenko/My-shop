@@ -1,78 +1,67 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: skillup_student
- * Date: 25.04.18
- * Time: 20:51
- */
-
 namespace App\Service;
-
-
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Entity\Product;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
 class Orders
 {
     const CART_ID = 'cart';
-
-/**
- * @var SessionInterface
- */
+    /**
+     * @var SessionInterface
+     */
     private $session;
-
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
     public function __construct(SessionInterface $session, EntityManagerInterface $em)
     {
         $this->session = $session;
-        $this->em=$em;
+        $this->em = $em;
     }
-    public function hasCart(){
-
-        return $this->session->has(self::CART_ID);
+    public function hasCart()
+    {
+        $cart = $this->session->has(self::CART_ID);
     }
-    public function getCart(): Order
+    public function getCart(User $user = null): Order
     {
         $order = null;
-        $orderID = $this->session->get(self::CART_ID);
-
-
-        if($orderID!==null){
-            $order = $this->em->find(Order::class,$orderID);
-
+        $orderId = $this->session->get(self::CART_ID);
+        if ($orderId !== null) {
+            $order = $this->em->find(Order::class, $orderId);
         }
-        if ($order===null){
+        if ($order === null) {
             $order = new Order();
             $this->em->persist($order);
-            $this->em->flush();
+
         }
+        if ($user) {
+            $order->setUser($user);
+        }
+        $this->em->flush();
         $this->session->set(self::CART_ID, $order->getId());
-
         return $order;
-
     }
-    public function addToCart(Product $product, $quantity){
-        $order = $this->getCart();
+    public function addToCart(Product $product, $quantity, User $user = null):Order
+    {
+        $order = $this->getCart($user);
         $orderItem = null;
-
-
         foreach ($order->getItems() as $item){
-           if ($item->getProduct()-> getID() ==$product->getId() ) {
-             $orderItem = $item;
-             break;
-           }
+            if ($item->getProduct()->getId() == $product->getId()) {
+                $orderItem = $item;
+                break;
+            }
         }
-
-        if (!$orderItem){
+        if (!$orderItem) {
             $orderItem = new OrderItem();
             $orderItem -> setProduct($product);
             $this->em->persist($orderItem);
-            $order ->addItem($orderItem);
+            $order->addItem($orderItem);
         }
-
-        $orderItem->setQuantity($orderItem->getQuantity()+$quantity);
+        $orderItem->setQuantity($orderItem->getQuantity() + $quantity);
         $this->em->flush();
         return $order;
     }

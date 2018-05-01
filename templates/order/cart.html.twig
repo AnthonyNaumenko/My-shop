@@ -3,25 +3,31 @@
 {% block title %}Orders{% endblock %}
 
 {% block body %}
+    <h1>Корзина</h1>
 <table class="table">
+
     <tr>
-        <th>Номер заказа</th>
-        <th>Дата создания заказа</th>
-        <th>Статус</th>
-        <th>Клиент</th>
-        <th>Статус оплаты</th>
+        <th>Товар</th>
+        <th>Цена</th>
         <th>Количество</th>
-    </tr>
+        <th>Стоимость</th>
 
+    </tr>
+    {#@var item \App\Entity\OrderItem #}
+{% for item in cart.items %}
     <tr>
-        <td>{{ cartId }}</td>
-        <td>{{ cartCreated|date("d/m/Y") }}</td>
-        <td>{{ status }}</td>
-        <td>{{ user }}</td>
-        <td>{{ isPaid }}</td>
-        <td>{{ amount }}</td>
+        <td>{{ item.product.title }}</td>
+        <td>{{ item.price }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.amount }}</td>
 
     </tr>
+{% endfor %}
+    <tr>
+        <th colspan="3">Всего</th>
+        <th>{{ cart.amount }}</th>
+    </tr>
+
 
     </table>
 
