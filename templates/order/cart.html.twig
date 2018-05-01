@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Orders{% endblock %}
+
+{% block body %}
+<table class="table">
+    <tr>
+        <th>Номер заказа</th>
+        <th>Дата создания заказа</th>
+        <th>Статус</th>
+        <th>Клиент</th>
+        <th>Статус оплаты</th>
+        <th>Количество</th>
+    </tr>
+
+    <tr>
+        <td>{{ cartId }}</td>
+        <td>{{ cartCreated|date("d/m/Y") }}</td>
+        <td>{{ status }}</td>
+        <td>{{ user }}</td>
+        <td>{{ isPaid }}</td>
+        <td>{{ amount }}</td>
+
+    </tr>
+
+    </table>
+
+{% endblock %}
