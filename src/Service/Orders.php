@@ -65,5 +65,25 @@ class Orders
         $this->em->flush();
         return $order;
     }
+    public function removeFromCart(OrderItem $item)
+    {
+      $this->em->remove($item);
+      $cart = $this->getCart();
+      $cart->updateAmount();
+      $this->em->flush();
 
+      return $cart;
+    }
+
+    public function updateCartItemQuantity(OrderItem $item, $quantity)
+    {
+        $item->setQuantity($quantity);
+        $this->em->flush();
+
+        $cart = $this->getCart();
+        $cart->updateAmount();
+        $this->em->flush();
+
+        return $cart;
+    }
 }
