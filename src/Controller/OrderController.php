@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Order;
+use App\Entity\OrderItem;
 use App\Entity\Product;
 use App\Service\Orders;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,5 +55,23 @@ class OrderController extends Controller
         return $this->render('order/header_cart.html.twig',[
             'cart'=> $orders->getCart()
     ]);
+    }
+
+
+
+
+    /**
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("order/item/delete/{id}", name="order_delete_item")
+     */
+    public function deleteItem(OrderItem $item)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($item);
+        $em->flush();
+
+        return $this->redirect('cart');
     }
 }

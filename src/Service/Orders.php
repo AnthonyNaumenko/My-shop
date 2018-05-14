@@ -13,6 +13,7 @@ class Orders
      * @var SessionInterface
      */
     private $session;
+
     /**
      * @var EntityManagerInterface
      */

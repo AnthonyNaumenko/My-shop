@@ -116,10 +116,10 @@ class Product
         return $this;
     }
 
-    public function __toString()
+   /* public function __toString(): ?string
     {
        return $this->title;
-    }
+    }*/
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
