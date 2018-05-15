@@ -3,7 +3,7 @@
 {% block title %}Goods{% endblock %}
 
 {% block body %}
-    <table class="table">
+    {#<table class="table">
         <tr>
             <th>Id</th>
             <th>Name</th>
@@ -20,5 +20,14 @@
                 <td><a href="{{ path('product_delete', {id:product.id}) }}" class="btn btn-danger">Delete</a> </td>
             </tr>
         {% endfor %}
-    </table>
+    </table>#}
+
+        <div class="card-deck product" >
+
+            {% for product in products %}
+                {{ include('product/list.html.twig') }}
+            {% endfor %}
+
+    </div>
+
 {% endblock %}

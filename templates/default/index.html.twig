@@ -6,7 +6,7 @@
 {% block body %}
     <h1>Топ-товары</h1>
 
-    <div class="card-deck product">
+  {#  <div class="card-deck product">
         {% for product in topProducts %}
             <div class="card" style="width: 18rem;">
                 <img class="card-img-top"
@@ -27,5 +27,11 @@
                 </div>
             </div>
         {% endfor %}
-    </div>
+    </div>#}
+<div class="card-deck product">
+    {% for product in topProducts %}
+        {{ include('product/list.html.twig') }}
+    {% endfor %}
+</div>
+
 {% endblock %}
