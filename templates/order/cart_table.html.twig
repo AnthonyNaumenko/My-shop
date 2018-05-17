@@ -1,4 +1,4 @@
-
+{% if cart.hasItems %}
     <table class="table table-striped ">
 
         <tr>
@@ -38,3 +38,17 @@
 
 
     </table>
+
+    <h2>Оформление заказа</h2>
+
+    {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
+    {{ form_widget(form) }}
+
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Подтвердите заказ">
+    </div>
+    {{ form_end(form) }}
+{% else %}
+    <p>Ваша корзина пуста, добавте<a href="{{ path('category') }}"> товары</a></p>
+{% endif %}
+
