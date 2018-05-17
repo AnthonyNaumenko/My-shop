@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\OrderItem;
 use App\Entity\Product;
+use App\Form\MakeOrderType;
 use App\Service\Orders;
 use http\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,12 +39,22 @@ class OrderController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/cart", name="order_cart")
      */
-    public function cart(Orders $orders)
+    public function cart(Orders $orders, Request $request)
     {
         $cart = $orders->getCart($this->getUser());
+        $form=$this->createForm(MakeOrderType::class, $cart);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted()&& $form->isValid()){
+           $orders->makeOrder($cart);
+
+           return $this->redirectToRoute('order_thanks');
+        }
 
         return $this->render('order/cart.html.twig', [
-            'cart' => $cart]);
+            'cart' => $cart,
+            'form' => $form->createView(),
+        ]);
     }
 
 
@@ -64,8 +75,11 @@ class OrderController extends Controller
     public function removeFromCart(Orders $orders, OrderItem $item)
     {
         $cart=$orders->removeFromCart($item);
+        $form=$this->createForm(MakeOrderType::class, $cart);
+
         return $this->render('order/cart_table.html.twig',[
-            'cart'=>$cart
+            'cart'=>$cart,
+            'form' => $form->createView(),
         ]);
 
 
@@ -82,11 +96,23 @@ class OrderController extends Controller
             $quantity=$item->getQuantity();
         }
         $cart = $orders->updateCartItemQuantity($item, $quantity);
+        $form=$this->createForm(MakeOrderType::class, $cart);
         return $this->render('order/cart_table.html.twig',[
-            'cart'=>$cart
+            'cart'=>$cart,
+            'form' => $form->createView(),
         ]);
 
     }
+
+
+    /**
+     * @Route("/order/thanks", name="order_thanks")
+     */
+    public function orerThanks()
+    {
+        return $this->render('order/thanks.html.twig');
+    }
+
 
 
 }
