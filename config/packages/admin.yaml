@@ -19,3 +19,10 @@ services:
               tags:
                    - { name: sonata.admin, manager_type: orm, label: admin.user.title}
               public: true
+
+    admin.orders:
+                  class: App\Admin\OrdersAdmin
+                  arguments: [~, App\Entity\Order, ~]
+                  tags:
+                       - { name: sonata.admin, manager_type: orm, label: admin.orders.title}
+                  public: true
