@@ -9,10 +9,12 @@
 namespace App\Admin;
 
 
+use Sirian\SuggestBundle\Form\Type\SuggestType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\CoreBundle\Form\Type\CollectionType;
 
 class OrdersAdmin extends AbstractAdmin
 {
@@ -22,22 +24,41 @@ class OrdersAdmin extends AbstractAdmin
            ->add('createdAt')
            ->add('status')
            ->add('isPaid')
-           ->add('amount')
+           ->add('user', SuggestType::class,[
+               'suggester'=>'user',
+               'attr'=>[
+                   'class' => 'form-control',
+                   ],
+           ])
+           ->add('amount', null,[
+               'attr'=>[
+                   'readonly'=>'1',
+                   'class'=>'js-order-amount',
+               ],
+           ])
            ->add('email')
            ->add('phone')
            ->add('comment')
            ->add('firstName')
            ->add('lastName')
+           ->add('items', CollectionType::class,[
+
+               'by_reference'=>false
+           ],[
+               'edit'=>'inline',
+               'inline'=>'table',
+           ])
            ;
     }
 
     protected function configureListFields(ListMapper $list)
     {
      $list
-         ->add('createdAt')
-         ->add('status')
-         ->add('isPaid')
-         ->add('amount')
+         ->addIdentifier('id')
+         ->addIdentifier('createdAt')
+         ->addIdentifier('status')
+         ->addIdentifier('isPaid')
+         ->addIdentifier('amount')
          ->addIdentifier('email')
          ->addIdentifier('phone')
          ->addIdentifier('comment')
