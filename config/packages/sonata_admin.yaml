@@ -1,11 +1,14 @@
 sonata_admin:
-    title: 'Sonata Admin'
+    title: 'My-shop'
+    title_logo: https://cdn4.iconfinder.com/data/icons/is_beta_accounting/png/400/basket.png
     dashboard:
         blocks:
             - { type: sonata.admin.block.admin_list, position: left }
     assets:
         extra_javascripts:
             - js/admin.js
+        extra_stylesheets:
+            - css/admin.css
 
 sonata_block:
     blocks:
